@@ -206,8 +206,15 @@ buffers.")
    `(window-divider ((,class (:foreground ,bg3))))
    `(window-divider-first-pixel ((,class (:foreground ,bg2))))
    `(window-divider-last-pixel ((,class (:foreground ,bg2))))
-   `(internal-border ((,class (:background ,bg0))))
-   `(child-frame-border ((,class (:background ,bg3))))
+   ;; `internal-border' and `child-frame-border' are deliberately left alone.
+   ;; Emacs's own spec for both is `(t nil)', i.e. "no attributes", which makes
+   ;; a frame fill its border with its own background colour.  posframe paints
+   ;; the border of a child frame with `child-frame-border' and only overrides
+   ;; that when the caller passes a border colour; emacs-rime passes none
+   ;; (`rime-posframe-properties' only sets `:internal-border-width 10') and
+   ;; gives the frame the background of `rime-default-face' (#333333), so any
+   ;; colour here turns into a ring of the wrong colour around the candidate
+   ;; window.  Same for `internal-border' on non-child frames.
    `(tooltip ((,class (:background ,bg2 :foreground ,fg1))))
    `(menu ((,class (:background ,bg2 :foreground ,fg1))))
    `(scroll-bar ((,class (:background ,bg2 :foreground ,bg4))))
